@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipmbmsys.meeting.mapper.SysClassParticipantMapper">
+    
+    <resultMap type="SysClassParticipant" id="SysClassParticipantResult">
+        <result property="id"    column="id"    />
+        <result property="classId"    column="class_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="signInStatus"    column="sign_in_status"    />
+        <result property="attendanceStatus"    column="attendance_status"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysClassParticipantVo">
+        select id, class_id, user_id, user_name, dept_name, sign_in_status, attendance_status, remark from sys_class_participant
+    </sql>
+
+    <select id="selectSysClassParticipantList" parameterType="SysClassParticipant" resultMap="SysClassParticipantResult">
+        <include refid="selectSysClassParticipantVo"/>
+        <where>  
+            <if test="classId != null "> and class_id = #{classId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="deptName != null  and deptName != ''"> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="signInStatus != null  and signInStatus != ''"> and sign_in_status = #{signInStatus}</if>
+            <if test="attendanceStatus != null  and attendanceStatus != ''"> and attendance_status = #{attendanceStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysClassParticipantById" parameterType="Long" resultMap="SysClassParticipantResult">
+        <include refid="selectSysClassParticipantVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysClassParticipant" parameterType="SysClassParticipant" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_class_participant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="classId != null">class_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null and userName != ''">user_name,</if>
+            <if test="deptName != null">dept_name,</if>
+            <if test="signInStatus != null">sign_in_status,</if>
+            <if test="attendanceStatus != null">attendance_status,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="classId != null">#{classId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null and userName != ''">#{userName},</if>
+            <if test="deptName != null">#{deptName},</if>
+            <if test="signInStatus != null">#{signInStatus},</if>
+            <if test="attendanceStatus != null">#{attendanceStatus},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysClassParticipant" parameterType="SysClassParticipant">
+        update sys_class_participant
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="classId != null">class_id = #{classId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userName != null and userName != ''">user_name = #{userName},</if>
+            <if test="deptName != null">dept_name = #{deptName},</if>
+            <if test="signInStatus != null">sign_in_status = #{signInStatus},</if>
+            <if test="attendanceStatus != null">attendance_status = #{attendanceStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysClassParticipantById" parameterType="Long">
+        delete from sys_class_participant where id = #{id}
+    </delete>
+
+    <delete id="deleteSysClassParticipantByIds" parameterType="String">
+        delete from sys_class_participant where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

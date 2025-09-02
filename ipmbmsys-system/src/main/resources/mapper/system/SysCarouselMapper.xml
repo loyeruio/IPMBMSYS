@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipmbmsys.system.mapper.SysCarouselMapper">
+    
+    <resultMap type="SysCarousel" id="SysCarouselResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="imageUrl"    column="image_url"    />
+        <result property="linkUrl"    column="link_url"    />
+        <result property="type"    column="type"    />
+        <result property="sort"    column="sort"    />
+        <result property="status"    column="status"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysCarouselVo">
+        select id, title, image_url, link_url, type, sort, status, start_time, end_time, create_by, create_time, update_by, update_time, remark from sys_carousel
+    </sql>
+
+    <select id="selectSysCarouselList" parameterType="SysCarousel" resultMap="SysCarouselResult">
+        <include refid="selectSysCarouselVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="imageUrl != null  and imageUrl != ''"> and image_url = #{imageUrl}</if>
+            <if test="linkUrl != null  and linkUrl != ''"> and link_url = #{linkUrl}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysCarouselById" parameterType="Long" resultMap="SysCarouselResult">
+        <include refid="selectSysCarouselVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysCarousel" parameterType="SysCarousel" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_carousel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="imageUrl != null and imageUrl != ''">image_url,</if>
+            <if test="linkUrl != null">link_url,</if>
+            <if test="type != null">type,</if>
+            <if test="sort != null">sort,</if>
+            <if test="status != null">status,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="imageUrl != null and imageUrl != ''">#{imageUrl},</if>
+            <if test="linkUrl != null">#{linkUrl},</if>
+            <if test="type != null">#{type},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="status != null">#{status},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysCarousel" parameterType="SysCarousel">
+        update sys_carousel
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="imageUrl != null and imageUrl != ''">image_url = #{imageUrl},</if>
+            <if test="linkUrl != null">link_url = #{linkUrl},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysCarouselById" parameterType="Long">
+        delete from sys_carousel where id = #{id}
+    </delete>
+
+    <delete id="deleteSysCarouselByIds" parameterType="String">
+        delete from sys_carousel where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

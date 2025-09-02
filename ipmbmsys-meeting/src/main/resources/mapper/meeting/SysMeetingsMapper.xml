@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipmbmsys.meeting.mapper.SysMeetingsMapper">
+
+    <resultMap type="SysMeetings" id="SysMeetingsResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="meetingType"    column="meeting_type"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="location"    column="location"    />
+        <result property="organizerId"    column="organizer_id"    />
+        <result property="branchId"    column="branch_id"    />
+        <result property="description"    column="description"    />
+        <result property="status"    column="status"    />
+        <result property="participants"    column="participants"    />
+        <result property="attachments"    column="attachments"    />
+        <result property="attendanceStatus"    column="attendance_status"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectSysMeetingsVo">
+        select id, title, meeting_type, start_time, end_time, location, organizer_id, branch_id, description, status, participants, attachments, attendance_status, create_time from sys_meetings
+    </sql>
+
+    <select id="selectSysMeetingsList" parameterType="SysMeetings" resultMap="SysMeetingsResult">
+        <include refid="selectSysMeetingsVo"/>
+        <where>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="meetingType != null  and meetingType != ''"> and meeting_type = #{meetingType}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+            <if test="organizerId != null "> and organizer_id = #{organizerId}</if>
+            <if test="branchId != null "> and branch_id = #{branchId}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+
+    <select id="selectSysMeetingsById" parameterType="Long" resultMap="SysMeetingsResult">
+        <include refid="selectSysMeetingsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysMeetings" parameterType="SysMeetings" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_meetings
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="meetingType != null and meetingType != ''">meeting_type,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="location != null">location,</if>
+            <if test="organizerId != null">organizer_id,</if>
+            <if test="branchId != null">branch_id,</if>
+            <if test="description != null">description,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="participants != null">participants,</if>
+            <if test="attachments != null">attachments,</if>
+            <if test="attendanceStatus != null">attendance_status,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="meetingType != null and meetingType != ''">#{meetingType},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="location != null">#{location},</if>
+            <if test="organizerId != null">#{organizerId},</if>
+            <if test="branchId != null">#{branchId},</if>
+            <if test="description != null">#{description},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="participants != null">#{participants},</if>
+            <if test="attachments != null">#{attachments},</if>
+            <if test="attendanceStatus != null">#{attendanceStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysMeetings" parameterType="SysMeetings">
+        update sys_meetings
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="meetingType != null and meetingType != ''">meeting_type = #{meetingType},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="organizerId != null">organizer_id = #{organizerId},</if>
+            <if test="branchId != null">branch_id = #{branchId},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="participants != null">participants = #{participants},</if>
+            <if test="attachments != null">attachments = #{attachments},</if>
+            <if test="attendanceStatus != null">attendance_status = #{attendanceStatus},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysMeetingsById" parameterType="Long">
+        delete from sys_meetings where id = #{id}
+    </delete>
+
+    <delete id="deleteSysMeetingsByIds" parameterType="String">
+        delete from sys_meetings where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

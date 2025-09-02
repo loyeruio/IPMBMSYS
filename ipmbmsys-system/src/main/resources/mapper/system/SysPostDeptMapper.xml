@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipmbmsys.system.mapper.SysPostDeptMapper">
+
+	<resultMap type="SysPostDept" id="SysPostDeptResult">
+		<result property="postId"     column="post_id"      />
+		<result property="deptId"     column="dept_id"      />
+	</resultMap>
+
+	<delete id="deletePostDeptByPostId" parameterType="Long">
+		delete from sys_post_dept where post_id=#{postId}
+	</delete>
+
+	<delete id="deletePostDept" parameterType="Long[]">
+		delete from sys_post_dept where post_id in
+		<foreach collection="array" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<insert id="batchPostDept">
+		insert into sys_post_dept(post_id, dept_id) values
+		<foreach item="item" index="index" collection="list" separator=",">
+			(#{item.postId},#{item.deptId})
+		</foreach>
+	</insert>
+
+	<select id="checkExist" resultMap="SysPostDeptResult">
+		select post_id, dept_id
+		from sys_post_dept
+		where post_id = #{postId} and dept_id = #{deptId}
+		limit 1
+	</select>
+</mapper>

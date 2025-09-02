@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipmbmsys.meeting.mapper.SysHalfMonthLearningMapper">
+
+    <resultMap type="SysHalfMonthLearning" id="SysHalfMonthLearningResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="organizerId"    column="organizer_id"    />
+        <result property="branchId"    column="branch_id"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="location"    column="location"    />
+        <result property="form"    column="form"    />
+        <result property="duration"    column="duration"    />
+        <result property="description"    column="description"    />
+        <result property="attachments"    column="attachments"    />
+        <result property="attendanceStatus"    column="attendance_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectSysHalfMonthLearningVo">
+        select id, title, organizer_id, branch_id, start_time, end_time, location, form, duration, description, attachments, attendance_status, create_time, status from sys_half_month_learning
+    </sql>
+
+    <select id="selectSysHalfMonthLearningList" parameterType="SysHalfMonthLearning" resultMap="SysHalfMonthLearningResult">
+        <include refid="selectSysHalfMonthLearningVo"/>
+        <where>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="organizerId != null "> and organizer_id = #{organizerId}</if>
+            <if test="branchId != null "> and branch_id = #{branchId}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+            <if test="form != null  and form != ''"> and form = #{form}</if>
+            <if test="duration != null "> and duration = #{duration}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="attachments != null  and attachments != ''"> and attachments = #{attachments}</if>
+            <if test="attendanceStatus != null  and attendanceStatus != ''"> and attendance_status = #{attendanceStatus}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+
+    <select id="selectSysHalfMonthLearningById" parameterType="Long" resultMap="SysHalfMonthLearningResult">
+        <include refid="selectSysHalfMonthLearningVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysHalfMonthLearning" parameterType="SysHalfMonthLearning" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_half_month_learning
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="organizerId != null">organizer_id,</if>
+            <if test="branchId != null">branch_id,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="location != null">location,</if>
+            <if test="form != null">form,</if>
+            <if test="duration != null">duration,</if>
+            <if test="description != null">description,</if>
+            <if test="attachments != null">attachments,</if>
+            <if test="attendanceStatus != null">attendance_status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="organizerId != null">#{organizerId},</if>
+            <if test="branchId != null">#{branchId},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="location != null">#{location},</if>
+            <if test="form != null">#{form},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="description != null">#{description},</if>
+            <if test="attachments != null">#{attachments},</if>
+            <if test="attendanceStatus != null">#{attendanceStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="status != null">#{status},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysHalfMonthLearning" parameterType="SysHalfMonthLearning">
+        update sys_half_month_learning
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="organizerId != null">organizer_id = #{organizerId},</if>
+            <if test="branchId != null">branch_id = #{branchId},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="form != null">form = #{form},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="attachments != null">attachments = #{attachments},</if>
+            <if test="attendanceStatus != null">attendance_status = #{attendanceStatus},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysHalfMonthLearningById" parameterType="Long">
+        delete from sys_half_month_learning where id = #{id}
+    </delete>
+
+    <delete id="deleteSysHalfMonthLearningByIds" parameterType="String">
+        delete from sys_half_month_learning where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

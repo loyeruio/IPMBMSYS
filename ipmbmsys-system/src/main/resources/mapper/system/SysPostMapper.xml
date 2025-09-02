@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipmbmsys.system.mapper.SysPostMapper">
+	<resultMap type="SysPost" id="SysPostResult">
+		<id     property="postId"        	  column="post_id"       	/>
+		<result property="postDescribes"      column="post_describes"   />
+		<result property="postName"      	  column="post_name"     	/>
+		<result property="postSort"      	  column="post_sort"     	/>
+		<result property="status"        	  column="status"        	/>
+		<result property="createBy"      	  column="create_by"     	/>
+		<result property="createTime"    	  column="create_time"   	/>
+		<result property="updateBy"      	  column="update_by"     	/>
+		<result property="updateTime"    	  column="update_time"   	/>
+		<result property="remark"        	  column="remark"        	/>
+		<result property="deptIds"        column="dept_ids"
+				typeHandler="com.ipmbmsys.common.handler.ArrayLongTypeHandler" />
+	</resultMap>
+	<sql id="selectPostVo">
+		select p.post_id, p.post_describes, p.post_name, p.post_sort, p.status,
+			   p.create_by, p.create_time, p.remark,
+			   GROUP_CONCAT(pd.dept_id) AS dept_ids
+		from sys_post p
+				 left join sys_post_dept pd on p.post_id = pd.post_id
+	</sql>
+
+	<select id="selectPostAll" resultMap="SysPostResult">
+		<include refid="selectPostVo"/>
+		GROUP BY p.post_id, p.post_describes, p.post_name, p.post_sort, p.status,
+		p.create_by, p.create_time, p.remark
+	</select>
+
+	<select id="selectPostList" parameterType="SysPost" resultMap="SysPostResult">
+		<include refid="selectPostVo"/>
+		<where>
+			<if test="postDescribes != null and postDescribes != ''">
+				AND p.post_describes LIKE concat('%', #{postDescribes}, '%')
+			</if>
+			<if test="status != null and status != ''">
+				AND p.status = #{status}
+			</if>
+			<if test="postName != null and postName != ''">
+				AND p.post_name LIKE concat('%', #{postName}, '%')
+			</if>
+			<if test="params.beginTime != null and params.beginTime != ''">
+				AND date_format(p.create_time,'%Y%m%d') &gt;= date_format(#{params.beginTime},'%Y%m%d')
+			</if>
+			<if test="params.endTime != null and params.endTime != ''">
+				AND date_format(p.create_time,'%Y%m%d') &lt;= date_format(#{params.endTime},'%Y%m%d')
+			</if>
+			${params.dataScope}
+		</where>
+		GROUP BY p.post_id, p.post_describes, p.post_name, p.post_sort, p.status,
+		p.create_by, p.create_time, p.remark
+	</select>
+
+	<select id="selectPostById" parameterType="Long" resultMap="SysPostResult">
+		<include refid="selectPostVo"/>
+		where p.post_id = #{postId}
+		GROUP BY p.post_id, p.post_describes, p.post_name, p.post_sort, p.status,
+		p.create_by, p.create_time, p.remark
+	</select>
+
+	<select id="selectPostByIds" parameterType="Long[]" resultMap="SysPostResult">
+		<include refid="selectPostVo"/>
+		where p.post_id in
+		<foreach collection="array" item="postId" open="(" separator="," close=")">
+			#{postId}
+		</foreach>
+		GROUP BY p.post_id, p.post_describes, p.post_name, p.post_sort, p.status,
+		p.create_by, p.create_time, p.remark
+	</select>
+
+	<select id="checkPostNameUnique" parameterType="String" resultMap="SysPostResult">
+		<include refid="selectPostVo"/>
+		where p.post_name = #{postName}
+		GROUP BY p.post_id, p.post_describes, p.post_name, p.post_sort, p.status,
+		p.create_by, p.create_time, p.remark
+		limit 1
+	</select>
+
+	<select id="checkPostDescribesUnique" parameterType="String" resultMap="SysPostResult">
+		<include refid="selectPostVo"/>
+		where p.post_describes = #{postDescribes}
+		GROUP BY p.post_id, p.post_describes, p.post_name, p.post_sort, p.status,
+		p.create_by, p.create_time, p.remark
+		limit 1
+	</select>
+	<select id="selectPostListByUserId" parameterType="Long" resultType="Long">
+		select p.post_id
+        from sys_post p
+	        left join sys_user_post up on up.post_id = p.post_id
+	        left join sys_user u on u.user_id = up.user_id
+	    where u.user_id = #{userId}
+	</select>
+	<select id="selectPostsByUserName" parameterType="String" resultMap="SysPostResult">
+		select p.post_id, p.post_name, p.post_describes
+		from sys_post p
+			 left join sys_user_post up on up.post_id = p.post_id
+			 left join sys_user u on u.user_id = up.user_id
+		where u.user_name = #{userName}
+	</select>
+	<update id="updatePost" parameterType="SysPost">
+ 		update sys_post
+ 		<set>
+ 			<if test="postDescribes != null and postDescribes != ''">post_describes = #{postDescribes},</if>
+ 			<if test="postName != null and postName != ''">post_name = #{postName},</if>
+ 			<if test="postSort != null">post_sort = #{postSort},</if>
+ 			<if test="status != null and status != ''">status = #{status},</if>
+ 			<if test="remark != null">remark = #{remark},</if>
+ 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+ 			update_time = sysdate()
+ 		</set>
+ 		where post_id = #{postId}
+	</update>
+ 	<insert id="insertPost" parameterType="SysPost" useGeneratedKeys="true" keyProperty="postId">
+ 		insert into sys_post(
+ 			<if test="postId != null and postId != 0">post_id,</if>
+ 			<if test="postDescribes != null and postDescribes != ''">post_describes,</if>
+ 			<if test="postName != null and postName != ''">post_name,</if>
+ 			<if test="postSort != null">post_sort,</if>
+ 			<if test="status != null and status != ''">status,</if>
+ 			<if test="remark != null and remark != ''">remark,</if>
+ 			<if test="createBy != null and createBy != ''">create_by,</if>
+ 			create_time
+ 		)values(
+ 			<if test="postId != null and postId != 0">#{postId},</if>
+ 			<if test="postDescribes != null and postDescribes != ''">#{postDescribes},</if>
+ 			<if test="postName != null and postName != ''">#{postName},</if>
+ 			<if test="postSort != null">#{postSort},</if>
+ 			<if test="status != null and status != ''">#{status},</if>
+ 			<if test="remark != null and remark != ''">#{remark},</if>
+ 			<if test="createBy != null and createBy != ''">#{createBy},</if>
+ 			sysdate()
+ 		)
+	</insert>
+	<delete id="deletePostById" parameterType="Long">
+		delete from sys_post where post_id = #{postId}
+	</delete>
+	<delete id="deletePostByIds" parameterType="Long[]">
+ 		delete from sys_post where post_id in
+ 		<foreach collection="array" item="postId" open="(" separator="," close=")">
+ 			#{postId}
+        </foreach>
+ 	</delete>
+</mapper>

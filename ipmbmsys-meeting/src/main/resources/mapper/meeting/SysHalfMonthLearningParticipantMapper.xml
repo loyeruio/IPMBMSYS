@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ipmbmsys.meeting.mapper.SysHalfMonthLearningParticipantMapper">
+
+    <resultMap type="SysHalfMonthLearningParticipant" id="SysHalfMonthLearningParticipantResult">
+        <result property="id" column="id"/>
+        <result property="learningId" column="learning_id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="attendanceStatus" column="attendance_status"/>
+        <result property="performanceScore" column="performance_score"/>
+        <result property="xuexiqiangguoPrev" column="xuexiqiangguo_prev"/>
+        <result property="xuexiqiangguoCurr" column="xuexiqiangguo_curr"/>
+        <result property="xuexiqiangguoDiff" column="xuexiqiangguo_diff"/>
+        <result property="xuexiqiangguoImage" column="xuexiqiangguo_image"/>
+        <result property="signInStatus" column="sign_in_status"/>
+        <result property="totalScore" column="total_score"/>
+        <result property="createTime" column="create_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectSysHalfMonthLearningParticipantVo">
+        SELECT id, learning_id, student_id, attendance_status, performance_score,
+               xuexiqiangguo_prev, xuexiqiangguo_curr, xuexiqiangguo_diff, xuexiqiangguo_image,
+               sign_in_status, total_score, create_time, remark
+        FROM sys_half_month_learning_participant
+    </sql>
+
+    <select id="selectSysHalfMonthLearningParticipantList" parameterType="SysHalfMonthLearningParticipant" resultMap="SysHalfMonthLearningParticipantResult">
+        <include refid="selectSysHalfMonthLearningParticipantVo"/>
+        <where>
+            <if test="learningId != null"> AND learning_id = #{learningId} </if>
+            <if test="studentId != null"> AND student_id = #{studentId} </if>
+            <if test="attendanceStatus != null and attendanceStatus != ''"> AND attendance_status = #{attendanceStatus} </if>
+            <if test="performanceScore != null"> AND performance_score = #{performanceScore} </if>
+            <if test="xuexiqiangguoPrev != null"> AND xuexiqiangguo_prev = #{xuexiqiangguoPrev} </if>
+            <if test="xuexiqiangguoCurr != null"> AND xuexiqiangguo_curr = #{xuexiqiangguoCurr} </if>
+            <if test="xuexiqiangguoDiff != null"> AND xuexiqiangguo_diff = #{xuexiqiangguoDiff} </if>
+            <if test="xuexiqiangguoImage != null and xuexiqiangguoImage != ''"> AND xuexiqiangguo_image = #{xuexiqiangguoImage} </if>
+            <if test="signInStatus != null and signInStatus != ''"> AND sign_in_status = #{signInStatus} </if>
+            <if test="totalScore != null"> AND total_score = #{totalScore} </if>
+            <if test="remark != null"> AND remark = #{remark} </if>
+        </where>
+    </select>
+
+    <select id="selectSysHalfMonthLearningParticipantById" parameterType="Long" resultMap="SysHalfMonthLearningParticipantResult">
+        <include refid="selectSysHalfMonthLearningParticipantVo"/>
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertSysHalfMonthLearningParticipant" parameterType="SysHalfMonthLearningParticipant" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_half_month_learning_participant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="learningId != null">learning_id,</if>
+            <if test="studentId != null">student_id,</if>
+            <if test="attendanceStatus != null">attendance_status,</if>
+            <if test="performanceScore != null">performance_score,</if>
+            <if test="xuexiqiangguoPrev != null">xuexiqiangguo_prev,</if>
+            <if test="xuexiqiangguoCurr != null">xuexiqiangguo_curr,</if>
+            <if test="xuexiqiangguoDiff != null">xuexiqiangguo_diff,</if>
+            <if test="xuexiqiangguoImage != null">xuexiqiangguo_image,</if>
+            <if test="signInStatus != null">sign_in_status,</if>
+            <if test="totalScore != null">total_score,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="learningId != null">#{learningId},</if>
+            <if test="studentId != null">#{studentId},</if>
+            <if test="attendanceStatus != null">#{attendanceStatus},</if>
+            <if test="performanceScore != null">#{performanceScore},</if>
+            <if test="xuexiqiangguoPrev != null">#{xuexiqiangguoPrev},</if>
+            <if test="xuexiqiangguoCurr != null">#{xuexiqiangguoCurr},</if>
+            <if test="xuexiqiangguoDiff != null">#{xuexiqiangguoDiff},</if>
+            <if test="xuexiqiangguoImage != null">#{xuexiqiangguoImage},</if>
+            <if test="signInStatus != null">#{signInStatus},</if>
+            <if test="totalScore != null">#{totalScore},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysHalfMonthLearningParticipant" parameterType="SysHalfMonthLearningParticipant">
+        UPDATE sys_half_month_learning_participant
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="learningId != null">learning_id = #{learningId},</if>
+            <if test="studentId != null">student_id = #{studentId},</if>
+            <if test="attendanceStatus != null">attendance_status = #{attendanceStatus},</if>
+            <if test="performanceScore != null">performance_score = #{performanceScore},</if>
+            <if test="xuexiqiangguoPrev != null">xuexiqiangguo_prev = #{xuexiqiangguoPrev},</if>
+            <if test="xuexiqiangguoCurr != null">xuexiqiangguo_curr = #{xuexiqiangguoCurr},</if>
+            <if test="xuexiqiangguoDiff != null">xuexiqiangguo_diff = #{xuexiqiangguoDiff},</if>
+            <if test="xuexiqiangguoImage != null">xuexiqiangguo_image = #{xuexiqiangguoImage},</if>
+            <if test="signInStatus != null">sign_in_status = #{signInStatus},</if>
+            <if test="totalScore != null">total_score = #{totalScore},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteSysHalfMonthLearningParticipantById" parameterType="Long">
+        DELETE FROM sys_half_month_learning_participant WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteSysHalfMonthLearningParticipantByIds" parameterType="String">
+        DELETE FROM sys_half_month_learning_participant WHERE id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

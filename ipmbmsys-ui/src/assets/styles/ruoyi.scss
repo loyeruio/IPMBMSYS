@@ -1,0 +1,700 @@
+/**
+* 通用css样式布局处理
+* Copyright (c) 2019 ruoyi
+*/
+
+/** 基础通用 **/
+.pt5 {
+  padding-top: 5px;
+}
+
+.pr5 {
+  padding-right: 5px;
+}
+
+.pb5 {
+  padding-bottom: 5px;
+}
+
+.mt5 {
+  margin-top: 5px;
+}
+
+.mr5 {
+  margin-right: 5px;
+}
+
+.mb5 {
+  margin-bottom: 5px;
+}
+
+.mb8 {
+  margin-bottom: 8px;
+}
+
+.ml5 {
+  margin-left: 5px;
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+.ml10 {
+	margin-left: 10px;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
+
+.mr20 {
+  margin-right: 20px;
+}
+
+.mb20 {
+  margin-bottom: 20px;
+}
+.ml20 {
+	margin-left: 20px;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+}
+
+.el-message-box__status + .el-message-box__message{
+  word-break: break-word;
+}
+
+.el-dialog:not(.is-fullscreen) {
+  margin-top: 6vh !important;
+}
+
+.el-dialog__wrapper.scrollbar .el-dialog .el-dialog__body {
+  overflow: auto;
+  overflow-x: hidden;
+  max-height: 70vh;
+  padding: 10px 20px 0;
+}
+
+.el-table {
+  .el-table__header-wrapper, .el-table__fixed-header-wrapper {
+    th {
+      word-break: break-word;
+      background-color: #f8f8f9;
+      color: #515a6e;
+      height: 40px;
+      font-size: 13px;
+    }
+  }
+
+  .el-table__body-wrapper {
+    .el-button [class*="el-icon-"] + span {
+      margin-left: 1px;
+    }
+  }
+}
+
+/** 表单布局 **/
+.form-header {
+  font-size: 15px;
+  color: #6379bb;
+  border-bottom: 1px solid #ddd;
+  margin: 8px 10px 25px 10px;
+  padding-bottom: 5px
+}
+
+/** 表格布局 **/
+.pagination-container {
+  position: relative;
+  height: 25px;
+  margin-bottom: 10px;
+  margin-top: 15px;
+  padding: 10px 20px !important;
+}
+
+/* tree border */
+.tree-border {
+  margin-top: 5px;
+  border: 1px solid #e5e6e7;
+  background: #FFFFFF none;
+  border-radius: 4px;
+}
+
+.pagination-container .el-pagination {
+  right: 0;
+  position: absolute;
+}
+
+@media (max-width: 768px) {
+  .pagination-container .el-pagination > .el-pagination__jump {
+    display: none !important;
+  }
+  .pagination-container .el-pagination > .el-pagination__sizes {
+    display: none !important;
+  }
+}
+
+.el-table .fixed-width .el-button--mini {
+  padding-left: 0;
+  padding-right: 0;
+  width: inherit;
+}
+
+/** 表格更多操作下拉样式 */
+.el-table .el-dropdown-link,.el-table .el-dropdown-selfdefine {
+	cursor: pointer;
+	margin-left: 5px;
+}
+
+.el-table .el-dropdown, .el-icon-arrow-down {
+  font-size: 12px;
+}
+
+.el-tree-node__content > .el-checkbox {
+  margin-right: 8px;
+}
+
+.list-group-striped > .list-group-item {
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.list-group {
+  padding-left: 0px;
+  list-style: none;
+}
+
+.list-group-item {
+  border-bottom: 1px solid #e7eaec;
+  border-top: 1px solid #e7eaec;
+  margin-bottom: -1px;
+  padding: 11px 0px;
+  font-size: 13px;
+}
+
+.pull-right {
+  float: right !important;
+}
+
+.el-card__header {
+  padding: 14px 15px 7px;
+  min-height: 40px;
+}
+
+.el-card__body {
+  padding: 15px 20px 20px 20px;
+}
+
+.card-box {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-bottom: 10px;
+}
+
+/* button color */
+.el-button--cyan.is-active,
+.el-button--cyan:active {
+  background: #20B2AA;
+  border-color: #20B2AA;
+  color: #FFFFFF;
+}
+
+.el-button--cyan:focus,
+.el-button--cyan:hover {
+  background: #48D1CC;
+  border-color: #48D1CC;
+  color: #FFFFFF;
+}
+
+.el-button--cyan {
+  background-color: #20B2AA;
+  border-color: #20B2AA;
+  color: #FFFFFF;
+}
+
+/* text color */
+.text-navy {
+  color: #1ab394;
+}
+
+.text-primary {
+  color: inherit;
+}
+
+.text-success {
+  color: #1c84c6;
+}
+
+.text-info {
+  color: #23c6c8;
+}
+
+.text-warning {
+  color: #f8ac59;
+}
+
+.text-danger {
+  color: #ed5565;
+}
+
+.text-muted {
+  color: #888888;
+}
+
+/* image */
+.img-circle {
+  border-radius: 50%;
+}
+
+.img-lg {
+  width: 120px;
+  height: 120px;
+}
+
+.avatar-upload-preview {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  box-shadow: 0 0 4px #ccc;
+  overflow: hidden;
+}
+
+/* 拖拽列样式 */
+.sortable-ghost {
+  opacity: .8;
+  color: #fff !important;
+  background: #42b983 !important;
+}
+
+.top-right-btn {
+  position: relative;
+  float: right;
+}
+
+.el-tag-common{
+  background-color: #ffe5f7;
+  border-color: #f3b5de;
+  color: #ea6dc1;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 24px;
+  padding: 0 9px;
+  font-size: 12px;
+  line-height: 1;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 4px;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+/* 自定义颜色 1 */
+.el-tag-pink {
+  background-color: #ffe5f7;
+  border-color: #f3b5de;
+  color: #ea6dc1;
+}
+
+/* 自定义颜色 2 */
+.el-tag-purple {
+  background-color: #E9EBFE;
+  border-color: #a5adf7;
+  color: #5868f8;
+}
+/* 自定义颜色 3 */
+.el-tag-teal {
+  background-color: #e6fffb;
+  border-color: #87e8de;
+  color: #13c2c2;
+}
+
+/* 自定义颜色 4 */
+.el-tag-indigo {
+  background-color: #e6e9ff;
+  border-color: #b3bdff;
+  color: #4051b5;
+}
+
+/* 自定义颜色 5 */
+.el-tag-brown {
+  background-color: #fff8f0;
+  border-color: #ffe0b2;
+  color: #a06c4d;
+}
+
+/* 自定义颜色 6 */
+.el-tag-gray {
+  background-color: #f7f8fa;
+  border-color: #d9d9d9;
+  color: #666666;
+}
+
+/* 自定义颜色 7 */
+.el-tag-violet {
+  background-color: #f9f0ff;
+  border-color: #e6b3ff;
+  color: #8c43e6;
+}
+
+/* 自定义颜色 8 */
+.el-tag-cyan {
+  background-color: #e6fffb;
+  border-color: #87e8de;
+  color: #13c2c2;
+}
+
+/* 自定义颜色 9 */
+.el-tag-magenta {
+  background-color: #fff0f6;
+  border-color: #ffadd2;
+  color: #eb2f96;
+}
+
+/* 自定义颜色 10 */
+.el-tag-lime {
+  background-color: #fcffe6;
+  border-color: #eaff8f;
+  color: #a0d911;
+}
+
+/* 自定义颜色 11 */
+.el-tag-orange {
+  background-color: #fff3e0;
+  border-color: #ffb74d;
+  color: #fb8c00;
+}
+
+/* 自定义颜色 12 */
+.el-tag-yellow {
+  background-color: #fff9c4;
+  border-color: #ffeb3b;
+  color: #fbc02d;
+}
+
+/* 自定义颜色 13 */
+.el-tag-green {
+  background-color: #e8f5e9;
+  border-color: #81c784;
+  color: #4caf50;
+}
+
+/* 自定义颜色 14 */
+.el-tag-darkgreen {
+  background-color: #e0f7fa;
+  border-color: #4dd0e1;
+  color: #0097a7;
+}
+
+/* 自定义颜色 15 */
+.el-tag-lightblue {
+  background-color: #e3f2fd;
+  border-color: #90caf9;
+  color: #2196f3;
+}
+
+/* 自定义颜色 16 */
+.el-tag-darkblue {
+  background-color: #e8eaf6;
+  border-color: #7986cb;
+  color: #3f51b5;
+}
+
+/* 自定义颜色 17 */
+.el-tag-pinklight {
+  background-color: #fce4ec;
+  border-color: #f8bbd0;
+  color: #e91e63;
+}
+
+/* 自定义颜色 18 */
+.el-tag-purplelight {
+  background-color: #ede7f6;
+  border-color: #b39ddb;
+  color: #673ab7;
+}
+
+/* 自定义颜色 19 */
+.el-tag-teallight {
+  background-color: #e0f2f1;
+  border-color: #80cbc4;
+  color: #00897b;
+}
+
+/* 自定义颜色 20 */
+.el-tag-indigolight {
+  background-color: #e8eaf6;
+  border-color: #7986cb;
+  color: #3949ab;
+}
+
+/* 自定义颜色 21 */
+.el-tag-brownlight {
+  background-color: #efebe9;
+  border-color: #bcaaa4;
+  color: #795548;
+}
+
+/* 自定义颜色 22 */
+.el-tag-graylight {
+  background-color: #f5f5f5;
+  border-color: #bdbdbd;
+  color: #9e9e9e;
+}
+
+/* 自定义颜色 23 */
+.el-tag-violetlight {
+  background-color: #f3e5f5;
+  border-color: #ce93d8;
+  color: #9c27b0;
+}
+
+/* 自定义颜色 24 */
+.el-tag-cyanlight {
+  background-color: #e0f7fa;
+  border-color: #4dd0e1;
+  color: #00acc1;
+}
+
+/* 自定义颜色 25 */
+.el-tag-magentalight {
+  background-color: #fce4ec;
+  border-color: #f8bbd0;
+  color: #ec407a;
+}
+
+/* 自定义颜色 26 */
+.el-tag-limelight {
+  background-color: #f1f8e9;
+  border-color: #c5e1a5;
+  color: #7cb342;
+}
+
+/* 自定义颜色 27 */
+.el-tag-peach {
+  background-color: #fff0f0;
+  border-color: #ffcdd2;
+  color: #e57373;
+}
+
+/* 自定义颜色 28 */
+.el-tag-mint {
+  background-color: #e0f7fa;
+  border-color: #80deea;
+  color: #00bcd4;
+}
+
+/* 自定义颜色 29 */
+.el-tag-lavender {
+  background-color: #f3e5f5;
+  border-color: #b39ddb;
+  color: #7e57c2;
+}
+
+/* 自定义颜色 30 */
+.el-tag-sand {
+  background-color: #fff8e1;
+  border-color: #ffcc80;
+  color: #ff9800;
+}
+
+/* 自定义颜色 31 */
+.el-tag-olive {
+  background-color: #f1f8e9;
+  border-color: #aed581;
+  color: #689f38;
+}
+
+/* 自定义颜色 32 */
+.el-tag-navy {
+  background-color: #e8eaf6;
+  border-color: #7986cb;
+  color: #303f9f;
+}
+
+/* 自定义颜色 33 */
+.el-tag-rust {
+  background-color: #fbe9e7;
+  border-color: #ffab91;
+  color: #ff5722;
+}
+
+/* 自定义颜色 34 */
+.el-tag-sky {
+  background-color: #e1f5fe;
+  border-color: #81d4fa;
+  color: #03a9f4;
+}
+
+/* 自定义颜色 35 */
+.el-tag-rose {
+  background-color: #fce4ec;
+  border-color: #f06292;
+  color: #d81b60;
+}
+
+/* 自定义颜色 36 */
+.el-tag-amber {
+  background-color: #fff8e1;
+  border-color: #ffd54f;
+  color: #ffb300;
+}
+
+/* 自定义颜色 37 */
+.el-tag-emerald {
+  background-color: #e8f5e9;
+  border-color: #66bb6a;
+  color: #388e3c;
+}
+
+/* 自定义颜色 38 */
+.el-tag-cobalt {
+  background-color: #e3f2fd;
+  border-color: #64b5f6;
+  color: #1976d2;
+}
+
+/* 自定义颜色 39 */
+.el-tag-lilac {
+  background-color: #f3e5f5;
+  border-color: #ba68c8;
+  color: #8e24aa;
+}
+
+/* 自定义颜色 40 */
+.el-tag-beige {
+  background-color: #fffde7;
+  border-color: #fff176;
+  color: #fbc02d;
+}
+
+/* 自定义颜色 41 */
+.el-tag-forest {
+  background-color: #e8f5e9;
+  border-color: #4caf50;
+  color: #2e7d32;
+}
+
+/* 自定义颜色 42 */
+.el-tag-azure {
+  background-color: #e0f7fa;
+  border-color: #26c6da;
+  color: #00838f;
+}
+
+/* 自定义颜色 43 */
+.el-tag-coral {
+  background-color: #ffebee;
+  border-color: #ef9a9a;
+  color: #c62828;
+}
+
+/* 自定义颜色 44 */
+.el-tag-gold {
+  background-color: #fff9c4;
+  border-color: #ffd700;
+  color: #ffb300;
+}
+
+/* 自定义颜色 45 */
+.el-tag-silver {
+  background-color: #f5f5f5;
+  border-color: #bdbdbd;
+  color: #757575;
+}
+
+/* 自定义颜色 46 */
+.el-tag-plum {
+  background-color: #f3e5f5;
+  border-color: #ab47bc;
+  color: #7b1fa2;
+}
+
+/* 自定义颜色 47 */
+.el-tag-tan {
+  background-color: #fff3e0;
+  border-color: #d7ccc8;
+  color: #a1887f;
+}
+
+/* 自定义颜色 48 */
+.el-tag-chartreuse {
+  background-color: #f1f8e9;
+  border-color: #cddc39;
+  color: #9e9d24;
+}
+
+/* 自定义颜色 49 */
+.el-tag-mauve {
+  background-color: #ede7f6;
+  border-color: #9575cd;
+  color: #5e35b1;
+}
+
+/* 自定义颜色 50 */
+.el-tag-slate {
+  background-color: #e0e0e0;
+  border-color: #9e9e9e;
+  color: #616161;
+}
+
+/* 自定义颜色 51 */
+.el-tag-vermilion {
+  background-color: #ffccbc;
+  border-color: #ff7043;
+  color: #d84315;
+}
+
+/* 自定义颜色 52 */
+.el-tag-turquoise {
+  background-color: #e0f7fa;
+  border-color: #4dd0e1;
+  color: #00acc1;
+}
+
+/* 自定义颜色 53 */
+.el-tag-fuchsia {
+  background-color: #fce4ec;
+  border-color: #f06292;
+  color: #d81b60;
+}
+
+/* 自定义颜色 54 */
+.el-tag-lemon {
+  background-color: #fffde7;
+  border-color: #fff9c4;
+  color: #fdd835;
+}
+
+/* 自定义颜色 55 */
+.el-tag-sage {
+  background-color: #e8f5e9;
+  border-color: #a5d6a7;
+  color: #43a047;
+}
+
+/* 自定义颜色 56 */
+.el-tag-periwinkle {
+  background-color: #e3f2fd;
+  border-color: #90caf9;
+  color: #2196f3;
+}

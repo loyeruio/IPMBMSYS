@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipmbmsys.system.mapper.SysNoticeMapper">
+
+    <!-- 结果映射 -->
+    <resultMap type="SysNotice" id="SysNoticeResult">
+        <result property="noticeId"        column="notice_id"        />
+        <result property="noticeTitle"     column="notice_title"     />
+        <result property="noticeType"      column="notice_type"      />
+        <result property="noticeContent"   column="notice_content"   />
+        <result property="noticeUserIds"   column="notice_user_ids"  />
+        <result property="status"          column="status"           />
+        <result property="createBy"        column="create_by"        />
+        <result property="createTime"      column="create_time"      />
+        <result property="updateBy"        column="update_by"        />
+        <result property="updateTime"      column="update_time"      />
+        <result property="remark"          column="remark"           />
+        <result property="recordTime"      column="record_time"      />
+        <result property="attachMent"      column="attachment"       />
+        <result property="activityType"    column="activity_type"    />
+        <result property="activityId"      column="activity_id"      />
+    </resultMap>
+
+    <!-- 公共SQL片段 -->
+    <sql id="selectNoticeVo">
+        select
+            notice_id,
+            notice_title,
+            notice_type,
+            cast(notice_content as char) as notice_content,
+            notice_user_ids,
+            status,
+            create_by,
+            create_time,
+            update_by,
+            update_time,
+            remark,
+            record_time,
+            attachment,
+            activity_type,
+            activity_id
+        from sys_notice
+    </sql>
+
+    <!-- 根据ID查询 -->
+    <select id="selectNoticeById" parameterType="Long" resultMap="SysNoticeResult">
+        <include refid="selectNoticeVo"/>
+        where notice_id = #{noticeId}
+    </select>
+
+    <!-- 列表查询 -->
+    <select id="selectNoticeList" parameterType="SysNotice" resultMap="SysNoticeResult">
+        <include refid="selectNoticeVo"/>
+        <where>
+            <if test="noticeTitle != null and noticeTitle != ''">
+                and notice_title like concat('%', #{noticeTitle}, '%')
+            </if>
+            <if test="noticeType != null and noticeType != ''">
+                and notice_type = #{noticeType}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by like concat('%', #{createBy}, '%')
+            </if>
+            <if test="activityType != null and activityType != ''">
+                and activity_type = #{activityType}
+            </if>
+            <if test="activityId != null and activityId != ''">
+                and activity_id = #{activityId}
+            </if>
+        </where>
+    </select>
+
+    <!-- 插入通知 -->
+    <insert id="insertNotice" parameterType="SysNotice">
+        insert into sys_notice (
+        <if test="noticeTitle != null and noticeTitle != '' ">notice_title, </if>
+        <if test="noticeType != null and noticeType != '' ">notice_type, </if>
+        <if test="noticeContent != null and noticeContent != '' ">notice_content, </if>
+        <if test="noticeUserIds != null and noticeUserIds != '' ">notice_user_ids, </if>
+        <if test="status != null and status != '' ">status, </if>
+        <if test="remark != null and remark != ''">remark,</if>
+        <if test="recordTime != null">record_time,</if>
+        <if test="attachMent != null">attachment,</if>
+        <if test="activityType != null and activityType != ''">activity_type,</if>
+        <if test="activityId != null and activityId != ''">activity_id,</if>
+        <if test="createBy != null and createBy != ''">create_by,</if>
+        create_time
+        ) values (
+        <if test="noticeTitle != null and noticeTitle != '' ">#{noticeTitle}, </if>
+        <if test="noticeType != null and noticeType != '' ">#{noticeType}, </if>
+        <if test="noticeContent != null and noticeContent != '' ">#{noticeContent}, </if>
+        <if test="noticeUserIds != null and noticeUserIds != '' ">#{noticeUserIds}, </if>
+        <if test="status != null and status != '' ">#{status}, </if>
+        <if test="remark != null and remark != ''">#{remark},</if>
+        <if test="recordTime != null">#{recordTime},</if>
+        <if test="attachMent != null">#{attachMent},</if>
+        <if test="activityType != null and activityType != ''">#{activityType},</if>
+        <if test="activityId != null and activityId != ''">#{activityId},</if>
+        <if test="createBy != null and createBy != ''">#{createBy},</if>
+        sysdate()
+        )
+    </insert>
+
+    <!-- 更新通知 -->
+    <update id="updateNotice" parameterType="SysNotice">
+        update sys_notice
+        <set>
+            <if test="noticeTitle != null and noticeTitle != '' ">notice_title = #{noticeTitle}, </if>
+            <if test="noticeType != null and noticeType != '' ">notice_type = #{noticeType}, </if>
+            <if test="noticeContent != null">notice_content = #{noticeContent}, </if>
+            <if test="noticeUserIds != null and noticeUserIds != '' ">notice_user_ids = #{noticeUserIds}, </if>
+            <if test="status != null and status != '' ">status = #{status}, </if>
+            <if test="remark != null and remark != ''">remark = #{remark}, </if>
+            <if test="recordTime != null">record_time = #{recordTime}, </if>
+            <if test="attachMent != null">attachment = #{attachMent}, </if>
+            <if test="activityType != null and activityType != ''">activity_type = #{activityType}, </if>
+            <if test="activityId != null and activityId != ''">activity_id = #{activityId}, </if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy}, </if>
+            update_time = sysdate()
+        </set>
+        where notice_id = #{noticeId}
+    </update>
+
+    <!-- 删除单个 -->
+    <delete id="deleteNoticeById" parameterType="Long">
+        delete from sys_notice where notice_id = #{noticeId}
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteNoticeByIds" parameterType="Long">
+        delete from sys_notice where notice_id in
+        <foreach item="noticeId" collection="array" open="(" separator="," close=")">
+            #{noticeId}
+        </foreach>
+    </delete>
+
+</mapper>

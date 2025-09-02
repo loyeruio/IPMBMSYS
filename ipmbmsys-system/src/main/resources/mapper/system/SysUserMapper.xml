@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ipmbmsys.system.mapper.SysUserMapper">
+
+	<resultMap type="SysUser" id="SysUserResult">
+		<id property="userId" 						column="user_id" 					/>
+		<result property="deptId" 					column="dept_id" 					/>
+		<result property="userName" 				column="user_name" 					/>
+		<result property="nickName" 				column="nick_name" 					/>
+		<result property="email" 					column="email" 						/>
+		<result property="userType" 				column="user_type" 					/>
+		<result property="phonenumber" 				column="phonenumber" 				/>
+		<result property="sex" 						column="sex" 						/>
+		<result property="avatar" 					column="avatar" 					/>
+		<result property="password" 				column="password" 					/>
+		<result property="status" 					column="status" 					/>
+		<result property="delFlag" 					column="del_flag" 					/>
+		<result property="loginIp" 					column="login_ip" 					/>
+		<result property="loginDate" 				column="login_date" 				/>
+		<result property="createBy" 				column="create_by" 					/>
+		<result property="createTime" 				column="create_time" 				/>
+		<result property="updateBy" 				column="update_by" 					/>
+		<result property="updateTime" 				column="update_time" 				/>
+		<result property="remark" 					column="remark" 					/>
+		<result property="partyMemberId" 			column="party_member_id" 			/>
+		<result property="ethnicity" 				column="ethnicity" 					/>
+		<result property="birthDate" 				column="birth_date" 				/>
+		<result property="education" 				column="education" 					/>
+		<result property="category" 				column="category" 					/>
+		<result property="applicationDate" 			column="application_date" 			/>
+		<result property="activistDate" 			column="activist_date" 				/>
+		<result property="developmentObjectDate" 	column="development_object_date" 	/>
+		<result property="probationaryMemberDate" 	column="probationary_member_date" 	/>
+		<result property="fullMemberDate" 			column="full_member_date" 			/>
+		<result property="isMissing" 				column="is_missing" 				/>
+		<result property="isMobile" 				column="is_mobile" 					/>
+		<result property="imagePath" 				column="image_path" 				/>
+		<association property="dept" 	javaType="SysDept" 			resultMap="deptResult" 	/>
+		<collection property="roles" 	javaType="java.util.List" 	resultMap="RoleResult" 	/>
+		<collection property="posts" ofType="SysPost" >
+			<id     property="postId"       column="post_id"      />
+			<result property="postName"     column="post_name"    />
+		</collection>
+	</resultMap>
+
+    <resultMap id="deptResult" type="SysDept">
+        <id     property="deptId"    column="dept_id"     />
+        <result property="parentId"  column="parent_id"   />
+        <result property="deptName"  column="dept_name"   />
+		<result property="deptImg"   column="dept_img"    />
+        <result property="ancestors" column="ancestors"   />
+        <result property="orderNum"  column="order_num"   />
+        <result property="leader"    column="leader"      />
+        <result property="status"    column="dept_status" />
+    </resultMap>
+
+    <resultMap id="RoleResult" type="SysRole">
+        <id     property="roleId"       column="role_id"        />
+        <result property="roleName"     column="role_name"      />
+        <result property="roleKey"      column="role_key"       />
+        <result property="roleSort"     column="role_sort"      />
+        <result property="dataScope"    column="data_scope"     />
+        <result property="status"       column="role_status"    />
+    </resultMap>
+
+	<sql id="selectUserVo">
+		select
+			u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.user_type, u.password, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
+			u.party_member_id, u.ethnicity, u.birth_date, u.education, u.category, u.application_date, u.activist_date, u.development_object_date, u.probationary_member_date, u.full_member_date, u.is_missing, u.is_mobile, u.image_path,
+			d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.status ,d.dept_img as dept_status,
+			r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
+		from sys_user u
+				 left join sys_dept d on u.dept_id = d.dept_id
+				 left join sys_user_role ur on u.user_id = ur.user_id
+				 left join sys_role r on r.role_id = ur.role_id
+	</sql>
+
+	<select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
+		select
+		u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.user_type, u.avatar, u.phonenumber, u.sex, u.status, u.del_flag,
+		u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, u.party_member_id, u.ethnicity, u.birth_date, u.education,
+		u.category, u.application_date, u.activist_date, u.development_object_date, u.probationary_member_date, u.full_member_date,
+		u.is_missing, u.is_mobile, u.image_path,
+		d.dept_name, d.leader
+		from sys_user u
+		left join sys_dept d on u.dept_id = d.dept_id
+		where u.del_flag = '0'
+		<if test="userId != null and userId != 0">
+		AND u.user_id = #{userId}
+		</if>
+		<if test="userName != null and userName != ''">
+		AND u.user_name like concat('%', #{userName}, '%')
+		</if>
+		<if test="status != null and status != ''">
+		AND u.status = #{status}
+		</if>
+		<if test="userType != null and userType != ''">
+		AND u.user_type = #{userType}
+		</if>
+		<if test="phonenumber != null and phonenumber != ''">
+		AND u.phonenumber like concat('%', #{phonenumber}, '%')
+		</if>
+		<if test="partyMemberId != null and partyMemberId != ''">
+		AND u.party_member_id like concat('%', #{partyMemberId}, '%')
+		</if>
+		<if test="ethnicity != null and ethnicity != ''">
+		AND u.ethnicity = #{ethnicity}
+		</if>
+		<if test="education != null and education != ''">
+		AND u.education = #{education}
+		</if>
+		<if test="category != null and category != ''">
+		AND u.category = #{category}
+		</if>
+		<if test="isMissing != null and isMissing != ''">
+		AND u.is_missing = #{isMissing}
+		</if>
+		<if test="isMobile != null and isMobile != ''">
+		AND u.is_mobile = #{isMobile}
+		</if>
+		<if test="params.beginTime != null and params.beginTime != ''">
+		AND date_format(u.create_time,'%Y%m%d') &gt;= date_format(#{params.beginTime},'%Y%m%d')
+		</if>
+		<if test="params.endTime != null and params.endTime != ''">
+		AND date_format(u.create_time,'%Y%m%d') &lt;= date_format(#{params.endTime},'%Y%m%d')
+		</if>
+		<if test="deptId != null and deptId != 0">
+		AND (u.dept_id = #{deptId} OR u.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE find_in_set(#{deptId}, ancestors) ))
+		</if>
+		${params.dataScope}
+	</select>
+
+	<select id="selectAllocatedList" parameterType="SysUser" resultMap="SysUserResult">
+		select distinct
+		u.user_id,u.dept_id,u.user_name,u.nick_name,u.email,u.phonenumber,u.status,u.create_time,u.party_member_id,u.ethnicity,u.birth_date,u.education,
+		u.category,u.application_date,u.activist_date,u.development_object_date,u.probationary_member_date,u.full_member_date,u.user_type,
+		u.is_missing,u.is_mobile,u.image_path
+		from sys_user u
+		left join sys_dept d on u.dept_id = d.dept_id
+		left join sys_user_role ur on u.user_id = ur.user_id
+		left join sys_role r on r.role_id = ur.role_id
+		where u.del_flag = '0' and r.role_id = #{roleId}
+		<if test="userName != null and userName != ''">
+			AND u.user_name like concat('%', #{userName}, '%')
+		</if>
+		<if test="phonenumber != null and phonenumber != ''">
+			AND u.phonenumber like concat('%', #{phonenumber}, '%')
+		</if>
+		<!-- 数据范围过滤 -->
+		${params.dataScope}
+	</select>
+
+	<select id="selectUnallocatedList" parameterType="SysUser" resultMap="SysUserResult">
+		select distinct
+		u.user_id,u.dept_id,u.user_name,u.nick_name,u.email,u.phonenumber,u.status,u.create_time,u.party_member_id,u.ethnicity,u.birth_date,
+		u.education,u.category,u.application_date,u.activist_date,u.development_object_date,u.user_type,
+		u.full_member_date,u.is_missing,u.is_mobile,u.image_path
+		from sys_user u
+		left join sys_dept d on u.dept_id = d.dept_id
+		left join sys_user_role ur on u.user_id = ur.user_id
+		left join sys_role r on r.role_id = ur.role_id
+		where u.del_flag = '0' and (r.role_id != #{roleId} or r.role_id IS NULL)
+		and u.user_id not in (select u.user_id from sys_user u inner join sys_user_role ur on u.user_id = ur.user_id and ur.role_id = #{roleId})
+		<if test="userName != null and userName != ''">
+			AND u.user_name like concat('%', #{userName}, '%')
+		</if>
+		<if test="phonenumber != null and phonenumber != ''">
+			AND u.phonenumber like concat('%', #{phonenumber}, '%')
+		</if>
+		<!-- 数据范围过滤 -->
+		${params.dataScope}
+	</select>
+
+	<select id="selectUserByUserName" parameterType="String" resultMap="SysUserResult">
+	    <include refid="selectUserVo"/>
+		where u.user_name = #{userName} and u.del_flag = '0'
+	</select>
+
+	<select id="selectUserById" parameterType="Long" resultMap="SysUserResult">
+		<include refid="selectUserVo"/>
+		where u.user_id = #{userId}
+	</select>
+
+	<select id="checkUserNameUnique" parameterType="String" resultMap="SysUserResult">
+		select user_id, user_name from sys_user where user_name = #{userName} and del_flag = '0' limit 1
+	</select>
+
+	<select id="checkPhoneUnique" parameterType="String" resultMap="SysUserResult">
+		select user_id, phonenumber from sys_user where phonenumber = #{phonenumber} and del_flag = '0' limit 1
+	</select>
+
+	<select id="checkEmailUnique" parameterType="String" resultMap="SysUserResult">
+		select user_id, email from sys_user where email = #{email} and del_flag = '0' limit 1
+	</select>
+
+	<!-- 批量查询用户角色关系 -->
+    <select id="selectUserRolesBatch" resultType="map">
+        SELECT
+            ur.user_id as userId,
+            r.role_id as roleId,
+            r.role_name as roleName,
+            r.role_key as roleKey,
+            r.role_sort as roleSort
+        FROM sys_user_role ur
+        INNER JOIN sys_role r ON ur.role_id = r.role_id
+        WHERE ur.user_id IN
+        <foreach collection="list" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        AND r.del_flag = '0'
+        ORDER BY ur.user_id, r.role_sort
+    </select>
+
+    <!-- 批量查询用户职务关系 -->
+    <select id="selectUserPostsBatch" resultType="map">
+        SELECT
+            up.user_id as userId,
+            p.post_id as postId,
+            p.post_name as postName,
+            p.post_code as postCode,
+            p.post_sort as postSort
+        FROM sys_user_post up
+        INNER JOIN sys_post p ON up.post_id = p.post_id
+        WHERE up.user_id IN
+        <foreach collection="list" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        AND p.del_flag = '0'
+        ORDER BY up.user_id, p.post_sort
+    </select>
+
+    <!-- 优化后的用户列表查询（带角色职务信息） -->
+	<select id="selectUserListWithRolesAndPosts" parameterType="SysUser" resultType="map">
+		SELECT
+		u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.user_type,
+		u.avatar, u.phonenumber, u.sex, u.status, u.del_flag,
+		u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
+		u.party_member_id, u.ethnicity, u.birth_date, u.education,
+		u.category, u.application_date, u.activist_date, u.development_object_date,
+		u.probationary_member_date, u.full_member_date,
+		u.is_missing, u.is_mobile, u.image_path,
+		d.dept_name, d.leader, d.dept_img,
+		GROUP_CONCAT(DISTINCT r.role_name SEPARATOR ',') as party_role,
+		GROUP_CONCAT(DISTINCT p.post_name SEPARATOR ',') as party_post
+		FROM sys_user u
+		LEFT JOIN sys_dept d ON u.dept_id = d.dept_id
+		LEFT JOIN sys_user_role ur ON u.user_id = ur.user_id
+		LEFT JOIN sys_role r ON ur.role_id = r.role_id AND r.del_flag = '0'
+		LEFT JOIN sys_user_post up ON u.user_id = up.user_id
+		LEFT JOIN sys_post p ON up.post_id = p.post_id AND p.status = '0'
+		WHERE u.del_flag = '0'
+		<if test="userId != null and userId != 0">
+			AND u.user_id = #{userId}
+		</if>
+		<if test="userName != null and userName != ''">
+			AND u.user_name like concat('%', #{userName}, '%')
+		</if>
+		<if test="status != null and status != ''">
+			AND u.status = #{status}
+		</if>
+		<if test="userType != null and userType != ''">
+			AND u.user_type = #{userType}
+		</if>
+		<if test="phonenumber != null and phonenumber != ''">
+			AND u.phonenumber like concat('%', #{phonenumber}, '%')
+		</if>
+		<if test="partyMemberId != null and partyMemberId != ''">
+			AND u.party_member_id like concat('%', #{partyMemberId}, '%')
+		</if>
+		<if test="ethnicity != null and ethnicity != ''">
+			AND u.ethnicity = #{ethnicity}
+		</if>
+		<if test="education != null and education != ''">
+			AND u.education = #{education}
+		</if>
+		<if test="category != null and category != ''">
+			AND u.category = #{category}
+		</if>
+		<if test="isMissing != null and isMissing != ''">
+			AND u.is_missing = #{isMissing}
+		</if>
+		<if test="isMobile != null and isMobile != ''">
+			AND u.is_mobile = #{isMobile}
+		</if>
+		<if test="params.beginTime != null and params.beginTime != ''">
+			AND date_format(u.create_time,'%Y%m%d') &gt;= date_format(#{params.beginTime},'%Y%m%d')
+		</if>
+		<if test="params.endTime != null and params.endTime != ''">
+			AND date_format(u.create_time,'%Y%m%d') &lt;= date_format(#{params.endTime},'%Y%m%d')
+		</if>
+		<if test="deptId != null and deptId != 0">
+			AND (u.dept_id = #{deptId} OR u.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE find_in_set(#{deptId}, ancestors) ))
+		</if>
+		${params.dataScope}
+		GROUP BY u.user_id
+		ORDER BY u.user_id ASC
+	</select>
+
+	<insert id="insertUser" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">
+		insert into sys_user(
+		<if test="userId != null and userId != 0">user_id,</if>
+		<if test="deptId != null and deptId != 0">dept_id,</if>
+		<if test="userName != null and userName != ''">user_name,</if>
+		<if test="nickName != null and nickName != ''">nick_name,</if>
+		<if test="email != null and email != ''">email,</if>
+		<if test="avatar != null and avatar != ''">avatar,</if>
+		<if test="phonenumber != null and phonenumber != ''">phonenumber,</if>
+		<if test="sex != null and sex != ''">sex,</if>
+		<if test="password != null and password != ''">password,</if>
+		<if test="status != null and status != ''">status,</if>
+		<if test="userType != null and userType != ''">user_type,</if> <!-- 调整到这里 -->
+		<if test="createBy != null and createBy != ''">create_by,</if>
+		<if test="remark != null and remark != ''">remark,</if>
+		<if test="partyMemberId != null and partyMemberId != ''">party_member_id,</if>
+		<if test="ethnicity != null and ethnicity != ''">ethnicity,</if>
+		<if test="birthDate != null">birth_date,</if>
+		<if test="education != null and education != ''">education,</if>
+		<if test="category != null and category != ''">category,</if>
+		<if test="applicationDate != null">application_date,</if>
+		<if test="activistDate != null">activist_date,</if>
+		<if test="developmentObjectDate != null">development_object_date,</if>
+		<if test="probationaryMemberDate != null">probationary_member_date,</if>
+		<if test="fullMemberDate != null">full_member_date,</if>
+		<if test="isMissing != null and isMissing != ''">is_missing,</if>
+		<if test="isMobile != null and isMobile != ''">is_mobile,</if>
+		<if test="imagePath != null and imagePath != ''">image_path,</if>
+		create_time
+		) values (
+		<if test="userId != null and userId != 0">#{userId},</if>
+		<if test="deptId != null and deptId != 0">#{deptId},</if>
+		<if test="userName != null and userName != ''">#{userName},</if>
+		<if test="nickName != null and nickName != ''">#{nickName},</if>
+		<if test="email != null and email != ''">#{email},</if>
+		<if test="avatar != null and avatar != ''">#{avatar},</if>
+		<if test="phonenumber != null and phonenumber != ''">#{phonenumber},</if>
+		<if test="sex != null and sex != ''">#{sex},</if>
+		<if test="password != null and password != ''">#{password},</if>
+		<if test="status != null and status != ''">#{status},</if>
+		<if test="userType != null and userType != ''">#{userType},</if> <!-- 调整到这里 -->
+		<if test="createBy != null and createBy != ''">#{createBy},</if>
+		<if test="remark != null and remark != ''">#{remark},</if>
+		<if test="partyMemberId != null and partyMemberId != ''">#{partyMemberId},</if>
+		<if test="ethnicity != null and ethnicity != ''">#{ethnicity},</if>
+		<if test="birthDate != null">#{birthDate},</if>
+		<if test="education != null and education != ''">education,</if>
+		<if test="category != null and category != ''">#{category},</if>
+		<if test="applicationDate != null">#{applicationDate},</if>
+		<if test="activistDate != null">#{activistDate},</if>
+		<if test="developmentObjectDate != null">#{developmentObjectDate},</if>
+		<if test="probationaryMemberDate != null">#{probationaryMemberDate},</if>
+		<if test="fullMemberDate != null">#{fullMemberDate},</if>
+		<if test="isMissing != null and isMissing != ''">#{isMissing},</if>
+		<if test="isMobile != null and isMobile != ''">#{isMobile},</if>
+		<if test="imagePath != null and imagePath != ''">#{imagePath},</if>
+		sysdate()
+		)
+	</insert>
+
+	<update id="updateUser" parameterType="SysUser">
+		update sys_user
+		<set>
+			<if test="deptId != null and deptId != 0">dept_id = #{deptId},</if>
+			<if test="userName != null and userName != ''">user_name = #{userName},</if>
+			<if test="nickName != null and nickName != ''">nick_name = #{nickName},</if>
+			<if test="email != null and email != ''">email = #{email},</if>
+			<if test="phonenumber != null and phonenumber != ''">phonenumber = #{phonenumber},</if>
+			<if test="sex != null and sex != ''">sex = #{sex},</if>
+			<if test="avatar != null and avatar != ''">avatar = #{avatar},</if>
+			<if test="password != null and password != ''">password = #{password},</if>
+			<if test="status != null and status != ''">status = #{status},</if>
+			<if test="loginIp != null and loginIp != ''">login_ip = #{loginIp},</if>
+			<if test="loginDate != null">login_date = #{loginDate},</if>
+			<if test="userType != null">user_type = #{userType},</if>
+			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+			<if test="remark != null and remark != ''">remark = #{remark},</if>
+			<if test="partyMemberId != null and partyMemberId != ''">party_member_id = #{partyMemberId},</if>
+			<if test="ethnicity != null and ethnicity != ''">ethnicity = #{ethnicity},</if>
+			<if test="birthDate != null">birth_date = #{birthDate},</if>
+			<if test="education != null and education != ''">education = #{education},</if>
+			<if test="category != null and category != ''">category = #{category},</if>
+			<if test="applicationDate != null">application_date = #{applicationDate},</if>
+			<if test="activistDate != null">activist_date = #{activistDate},</if>
+			<if test="developmentObjectDate != null">development_object_date = #{developmentObjectDate},</if>
+			<if test="probationaryMemberDate != null">probationary_member_date = #{probationaryMemberDate},</if>
+			<if test="fullMemberDate != null">full_member_date = #{fullMemberDate},</if>
+			<if test="isMissing != null and isMissing != ''">is_missing = #{isMissing},</if>
+			<if test="isMobile != null and isMobile != ''">is_mobile = #{isMobile},</if>
+			<if test="imagePath != null and imagePath != ''">image_path = #{imagePath},</if>
+			update_time = sysdate()
+		</set>
+		where user_id = #{userId}
+	</update>
+
+	<update id="updateUserStatus" parameterType="SysUser">
+ 		update sys_user set status = #{status} where user_id = #{userId}
+	</update>
+
+	<update id="updateUserAvatar" parameterType="SysUser">
+ 		update sys_user set avatar = #{avatar} where user_name = #{userName}
+	</update>
+
+	<update id="resetUserPwd" parameterType="SysUser">
+ 		update sys_user set password = #{password} where user_name = #{userName}
+	</update>
+
+	<delete id="deleteUserById" parameterType="Long">
+ 		update sys_user set del_flag = '2' where user_id = #{userId}
+ 	</delete>
+
+ 	<delete id="deleteUserByIds" parameterType="Long">
+ 		update sys_user set del_flag = '2' where user_id in
+ 		<foreach collection="array" item="userId" open="(" separator="," close=")">
+ 			#{userId}
+        </foreach>
+ 	</delete>
+
+</mapper>

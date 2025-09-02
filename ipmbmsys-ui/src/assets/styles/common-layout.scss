@@ -1,0 +1,89 @@
+// 通用布局样式
+.app-container {
+  padding: 20px;
+  height: calc(100vh - 84px);
+  overflow: hidden;
+}
+
+.full-height-row {
+  height: 100%;
+}
+
+.dept-col {
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.dept-container {
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.content-col {
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;  // 外层容器隐藏溢出
+}
+
+.content-container {
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;  // 内层容器允许垂直滚动
+  overflow-x: hidden;
+  padding: 20px;
+  padding-right: 10px;
+  min-height: 0;
+  background: white;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+// 自定义树节点样式
+.custom-tree-node {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  font-size: 14px;
+  padding-right: 8px;
+}
+
+.custom-tree-node .text {
+  margin-left: 5px;
+  color: #606266;
+}
+
+// 响应式设计
+@media (max-width: 1200px) {
+  .dept-col {
+    span: 8;
+  }
+  .content-col {
+    span: 16;
+  }
+}
+
+@media (max-width: 768px) {
+  .full-height-row {
+    flex-direction: column;
+  }
+  
+  .dept-col, .content-col {
+    span: 24;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  .dept-col:last-child, .content-col:last-child {
+    margin-bottom: 0;
+  }
+}
